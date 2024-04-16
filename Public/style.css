@@ -1,3 +1,7 @@
+*{
+    margin: 0;
+    padding: 0;
+}
 #grid-container {
     display: grid;
     grid-template-columns: auto auto auto;
@@ -13,4 +17,13 @@
   }
   .grid-item img {
     width: 100px;
+  }
+
+  #popup{
+    z-index: 2;
+    display: none;
+    background-color: rgba(128, 128, 128, 0.615);
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
   }
