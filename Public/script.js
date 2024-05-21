@@ -6,6 +6,7 @@ let winkelmand = [];
 const rootURL = "http://localhost/Files/Kiosk/";
 
 function start() {
+
   fetch(`${rootURL}server/api.php?action=getCategories`)
     .then(response => response.json())
     .then(data => {
@@ -23,6 +24,7 @@ function start() {
 }
 
 function clear() {
+  document.getElementById("welcomeMessage").style.opacity = 0;
   items.forEach(item => {
     if (!item.classList.contains("grid-cat")) {
       item.remove();
