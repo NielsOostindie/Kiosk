@@ -3,8 +3,10 @@ const blacklist = [3, 4, 5, 6, 7, 8, 9, 10, 14, 15];
 const MealList = [3, 4, 5, 6, 7, 8, 9, 10, 14, 15];
 let winkelmand = [];
 
+const rootURL = "http://localhost/lool2/Kiosk/"
+
 function start() {
-  fetch("http://localhost/Files/Kiosk/server/api.php?action=getCategories")
+  fetch(`${rootURL}server/api.php?action=getCategories`)
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -31,7 +33,7 @@ function clear() {
 function MakeMeal(id) {
   if (MealList.includes(id)) {
     clear();
-    fetch(`http://localhost/Files/Kiosk/server/api.php?action=getProducts&categorie=${id}`)
+    fetch(`${rootURL}server/api.php?action=getProducts&categorie=${id}`)
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -53,7 +55,7 @@ function MakeMeal(id) {
 function Meal(ID, isMeal) {
   if (isMeal == "1") {
     clear();
-    fetch(`http://localhost/Files/Kiosk/server/api.php?action=getMealImages&product_id=${ID}`)
+    fetch(`${rootURL}server/api.php?action=getMealImages&product_id=${ID}`)
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -98,7 +100,7 @@ function updateCookie() {
 
 function run(id) {
   clear();
-  fetch(`http://localhost/Files/Kiosk/server/api.php?action=getProducts&categorie=${id}`)
+  fetch(`${rootURL}server/api.php?action=getProducts&categorie=${id}`)
     .then(response => response.json())
     .then(data => {
       console.log(data);
