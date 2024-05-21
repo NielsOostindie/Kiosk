@@ -63,7 +63,7 @@ function Meal(ID, isMeal) {
         mainDiv.classList.add("grid-item");
         mainDiv.innerHTML = `<p>${data[0].Name}</p>
                              <img onclick='winkel("${data[0].Name} ${data[0].Price}"); clear()' id="${ID}" src="${data[0].Image}">
-                             <p>${data[0].Price}</p>`;
+                             <p> &euro;${data[0].Price}</p>`;
 
         const mealImages = JSON.parse(data[0].MealImage);
 
@@ -74,7 +74,7 @@ function Meal(ID, isMeal) {
           div.classList.add("grid-item");
           div.innerHTML = `<p>${data[0].Name} Meal</p>
                            <img onclick='MakeMeal(${data[0].MealID}); winkel("${data[0].Name} meal ${data[0].MealPrice}");' id="${data[0].MealID}" src="${mealImages[i]}">
-                           <p>${data[0].MealPrice}</p>`;
+                           <p> &euro;${data[0].MealPrice}</p>`;
         }
       })
       .catch(error => console.error(`Error: ${error}`));
@@ -110,7 +110,7 @@ function run(id) {
           div.classList.add("grid-item");
           div.innerHTML = `<p>${product.Name}</p>
                            <img onclick='Meal(${product.ID}, ${product.Meal});' id="${product.ID}" src="${product.Image}" alt="${product.Name}">
-                           <p>${product.Price}</p>`;
+                           <p>${`&euro;` + product.Price}</p>`;
         }
       });
     })
