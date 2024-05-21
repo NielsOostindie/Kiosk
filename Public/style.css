@@ -1,29 +1,87 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-#grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    padding: 10px;
-  }
-  .grid-item {
-    background-color: red;
-    cursor: pointer;
-    width: 100px;
-    padding: 20px;
-    font-size: 30px;
-    text-align: center;
-  }
-  .grid-item img {
-    width: 100px;
-  }
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-  #popup{
-    z-index: 2;
-    display: none;
-    background-color: rgba(128, 128, 128, 0.615);
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-  }
+* {
+  font-family: "Roboto Condensed", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#cat {
+  display: grid;
+  grid-template-columns: auto;
+  padding-top: 20px;
+  row-gap: 10px;
+}
+
+.grid-cat {
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+  width: 200px;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.grid-cat img {
+  width: 100px;
+}
+
+#grid-container {
+  display: grid;
+  width: 80%;
+  margin-left: 250px;
+  grid-template-columns: auto auto auto;
+  margin-top: -660px;
+  padding: 10px;
+  column-gap: 30px;
+  row-gap: 30px;
+}
+
+.grid-item {
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+  width: auto;
+  height: 200px;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.grid-item img {
+  width: 200px;
+}
+
+#popup {
+  z-index: 2;
+  display: none;
+  background-color: rgba(128, 128, 128, 0.615);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
+#back {
+  width: 240px;
+  height: 150px;
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.32);
+  align-content: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+#back img {
+  width: 100px;
+}
+
+#checkOut {
+  width: 240px;
+  height: 150px;
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.32);
+  align-content: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+#checkOut img {
+  width: 100px;
+}

@@ -1,106 +1,122 @@
 const items = [];
-var blacklist = [3, 4, 5, 6, 7, 8, 9, 10];
-const xhr = new XMLHttpRequest();
-let filter = 0;
+const blacklist = [3, 4, 5, 6, 7, 8, 9, 10, 14, 15];
+const MealList = [3, 4, 5, 6, 7, 8, 9, 10, 14, 15];
+let winkelmand = [];
 
 function start() {
-  xhr.open("GET", "http://localhost/Kiosk/server/api.php?action=getCategories");
-  xhr.send();
-  xhr.responseType = "json";
-  xhr.onload = () => {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      console.log(xhr.response);
-      for (let i = 0; i < xhr.response.length; i++) {
-        var div = document.createElement("div");
+  fetch("http://localhost/Files/Kiosk/server/api.php?action=getCategories")
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      data.forEach(category => {
+        const div = document.createElement("div");
         items.push(div);
-        document.getElementById("grid-container").appendChild(div);
-        div.classList.add("grid-item");
-        div.innerHTML = `<img onclick="run(${xhr.response[i].ID})" id="${xhr.response[i].ID}" src="${xhr.response[i].Image}" alt="${xhr.response[i].Name}">`;
-      }
-    } else {
-      console.log(`Error: ${xhr.status}`);
-    }
-  };
+        document.getElementById("cat").appendChild(div);
+        div.classList.add("grid-cat");
+        div.innerHTML = `<p>${category.Name}</p>
+                         <img onclick="run(${category.ID})" id="${category.ID}" class="${category.Cat_ID}" src="${category.Image}" alt="${category.Name}">`;
+      });
+    })
+    .catch(error => console.error(`Error: ${error}`));
 }
 
 function clear() {
-  for (let i = 0; i < items.length; i++) {
-    items[i].remove();
+  items.forEach(item => {
+    if (!item.classList.contains("grid-cat")) {
+      item.remove();
+    }
+  });
+}
+
+function MakeMeal(id) {
+  if (MealList.includes(id)) {
+    clear();
+    fetch(`http://localhost/Files/Kiosk/server/api.php?action=getProducts&categorie=${id}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        data.forEach(product => {
+          if (!blacklist.includes(Number(product.ID))) {
+            const div = document.createElement("div");
+            items.push(div);
+            document.getElementById("grid-container").appendChild(div);
+            div.classList.add("grid-item");
+            div.innerHTML = `<p>${product.Name}</p>
+                             <img onclick='winkel("${product.Name}");' id="${product.ID}" src="${product.Image}" alt="${product.Name}">`;
+          }
+        });
+      })
+      .catch(error => console.error(`Error: ${error}`));
   }
 }
 
-function test(ID, Meal) {
-  console.log(ID);
-  if (Meal == "1") {
-    // clear();
-    // var div = document.createElement("div");
-    // document.getElementById("grid-container").appendChild(div);
-    // div.classList.add("grid-item");
-    // div.innerHTML = `<img onclick='test(${xhr.response[0].ID});' id="${xhr.response[0].ID}" src="${xhr.response[0].Image}" alt="${xhr.response[0].Name}">`;
-    // var div = document.createElement("div");
-    // document.getElementById("grid-container").appendChild(div);
-    // div.classList.add("grid-item");
-    // div.innerHTML = `<img onclick='test(${xhr.response[2].ID});' id="${xhr.response[2].ID}" src="${xhr.response[2].Image}" alt="${xhr.response[2].Name}">`;
+function Meal(ID, isMeal) {
+  if (isMeal == "1") {
     clear();
-    xhr.open(
-      "GET",
-      "http://localhost/Kiosk/server/api.php?action=getMealImages&product_id=" +
-        ID
-    );
-    xhr.send();
-    xhr.responseType = "json";
-    console.log(xhr.response);
-    xhr.onload = () => {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        console.log(xhr.response);
+    fetch(`http://localhost/Files/Kiosk/server/api.php?action=getMealImages&product_id=${ID}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        const mainDiv = document.createElement("div");
+        items.push(mainDiv);
+        document.getElementById("grid-container").appendChild(mainDiv);
+        mainDiv.classList.add("grid-item");
+        mainDiv.innerHTML = `<p>${data[0].Name}</p>
+                             <img onclick='winkel("${data[0].Name} ${data[0].Price}"); clear()' id="${ID}" src="${data[0].Image}">
+                             <p>${data[0].Price}</p>`;
 
-        var div = document.createElement("div");
-        items.push(div);
-        document.getElementById("grid-container").appendChild(div);
-        div.classList.add("grid-item");
-        div.innerHTML = `<img id="${xhr.response[0].ID}" src="${xhr.response[0].Image}">`;
+        const mealImages = JSON.parse(data[0].MealImage);
 
-        var obj = xhr.response[0].MealImage;
-        var json = JSON.parse(obj);
-
-        for (let i = 1; i <= Object.keys(json).length; i++) {
-          var div = document.createElement("div");
+        for (let i = 1; i <= Object.keys(mealImages).length; i++) {
+          const div = document.createElement("div");
           items.push(div);
           document.getElementById("grid-container").appendChild(div);
           div.classList.add("grid-item");
-          div.innerHTML = `<img src="${json[i]}">`;
+          div.innerHTML = `<p>${data[0].Name} Meal</p>
+                           <img onclick='MakeMeal(${data[0].MealID}); winkel("${data[0].Name} meal ${data[0].MealPrice}");' id="${data[0].MealID}" src="${mealImages[i]}">
+                           <p>${data[0].MealPrice}</p>`;
         }
-      } else {
-        console.log(`Error: ${xhr.status}`);
-      }
-    };
+      })
+      .catch(error => console.error(`Error: ${error}`));
   } else {
     console.log("false");
   }
 }
 
+function winkel(Name) {
+  clear();
+  winkelmand.push(Name);
+  console.log(winkelmand);
+  updateCookie();
+}
+
+function updateCookie() {
+  const expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + 4);
+  document.cookie = `winkelmand=${winkelmand}; expires=${expirationDate.toUTCString()}`;
+}
+
 function run(id) {
   clear();
-  xhr.open(
-    "GET",
-    "http://localhost/Kiosk/server/api.php?action=getProducts&categorie=" + id
-  );
-  xhr.send();
-  xhr.responseType = "json";
-  xhr.onload = () => {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      console.log(xhr.response);
-      for (let i = 0; i < xhr.response.length; i++) {
-        if (blacklist.includes(Number(xhr.response[i].ID)) == false) {
-          var div = document.createElement("div");
+  fetch(`http://localhost/Files/Kiosk/server/api.php?action=getProducts&categorie=${id}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      data.forEach(product => {
+        if (!blacklist.includes(Number(product.ID))) {
+          const div = document.createElement("div");
           items.push(div);
           document.getElementById("grid-container").appendChild(div);
           div.classList.add("grid-item");
-          div.innerHTML = `<img onclick='test(${xhr.response[i].ID}, ${xhr.response[i].Meal});' id="${xhr.response[i].ID}" src="${xhr.response[i].Image}" alt="${xhr.response[i].Name}">`;
+          div.innerHTML = `<p>${product.Name}</p>
+                           <img onclick='Meal(${product.ID}, ${product.Meal});' id="${product.ID}" src="${product.Image}" alt="${product.Name}">
+                           <p>${product.Price}</p>`;
         }
-      }
-    } else {
-      console.log(`Error: ${xhr.status}`);
-    }
-  };
+      });
+    })
+    .catch(error => console.error(`Error: ${error}`));
+}
+
+function reload() {
+  location.reload();
 }

@@ -29,7 +29,7 @@ function getMealImages($conn)
 		die();
 	}
 
-	$sql = "SELECT Image, MealImage FROM Products where ID = $product_id;";
+	$sql = "SELECT Image, Name, MealPrice, Price, MealImage, MealID FROM Products where ID = $product_id;";
 	$result = $conn->query($sql);
 
 	$data = array();
@@ -47,7 +47,7 @@ function getMealImages($conn)
 function getProducts($conn)
 {
 	$categorie = $_GET['categorie'];
-	
+
 	if (!is_numeric($categorie)) {
 		print("Invalid categorie id");
 		die();
@@ -88,14 +88,4 @@ if ($conn->connect_error) {
 	} else {
 		$action($conn);
 	}
-
-	// if ($action == 'getProducts' && isset($_GET['categorie'])) {
-	// 	getProducts($conn , $_GET['categorie']);
-	// } else if ($action == 'getCategories') {
-	// 	getCategories($conn);
-	// } else if ($action == 'getMealImages' && isset($_GET['product_id'])) {
-	// 	getMealImages($conn, $_GET['product_id']);
-	// }  else {
-	// 	print("Invalid action");
-	// }
 }
