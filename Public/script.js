@@ -3,7 +3,7 @@ const blacklist = [3, 4, 5, 6, 7, 8, 9, 10, 14, 15];
 const MealList = [3, 4, 5, 6, 7, 8, 9, 10, 14, 15];
 let winkelmand = [];
 
-const rootURL = "http://localhost/lool2/Kiosk/"
+const rootURL = "http://localhost/Files/Kiosk/";
 
 function start() {
   fetch(`${rootURL}server/api.php?action=getCategories`)
