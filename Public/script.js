@@ -25,6 +25,7 @@ function start() {
 
 function clear() {
   document.getElementById("welcomeMessage").style.opacity = 0;
+  document.getElementById("drinkMessage").style.opacity = 0;
   items.forEach(item => {
     if (!item.classList.contains("grid-cat")) {
       item.remove();
@@ -39,6 +40,7 @@ function MakeMeal(id) {
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        document.getElementById("drinkMessage").style.opacity = 1;
         data.forEach(product => {
           if (!blacklist.includes(Number(product.ID))) {
             const div = document.createElement("div");
